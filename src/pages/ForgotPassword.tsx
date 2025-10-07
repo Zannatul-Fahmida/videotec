@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
@@ -20,7 +22,7 @@ const ForgotPassword = () => {
 
     try {
       // Replace with your actual forgot password API endpoint
-      const response = await fetch('https://videotecapp-ghcxhdhef8bqbsex.francecentral-01.azurewebsites.net/auth/forgot-password', {
+      const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

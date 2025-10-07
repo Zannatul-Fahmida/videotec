@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
 const ResetPassword = () => {
   const [searchParams] = useSearchParams()
   const token = searchParams.get('token')
@@ -44,7 +46,7 @@ const ResetPassword = () => {
 
     try {
       // Replace with your actual reset password API endpoint
-      const response = await fetch('https://videotecapp-ghcxhdhef8bqbsex.francecentral-01.azurewebsites.net/auth/reset-password', {
+      const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
