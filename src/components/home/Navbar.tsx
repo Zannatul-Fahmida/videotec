@@ -90,6 +90,20 @@ const Navbar = () => {
                     >
                       Profile
                     </Link>
+                    <Link
+                        to="/create-school"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                        onClick={closeMenu}
+                      >
+                        Create School
+                      </Link>
+                    <Link
+                        to="/create-class"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                        onClick={closeMenu}
+                      >
+                        Create Class
+                      </Link>
                     <button
                       onClick={handleLogout}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
@@ -168,6 +182,20 @@ const Navbar = () => {
                         onClick={closeMenu}
                       >
                         Profile
+                      </Link>
+                      <Link
+                        to="/create-school"
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors text-center"
+                        onClick={closeMenu}
+                      >
+                        Create School
+                      </Link>
+                      <Link
+                        to="/create-class"
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors text-center"
+                        onClick={closeMenu}
+                      >
+                        Create Class
                       </Link>
                       <button
                         onClick={handleLogout}
