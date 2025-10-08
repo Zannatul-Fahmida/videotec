@@ -104,12 +104,32 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         throw new Error(data.detail?.[0]?.msg || 'Login failed')
       }
 
-      // Create user object with available data
-      const userData = {
-        email: email,
-        full_name: email.split('@')[0], // Use email prefix as fallback name
-        date_of_birth: null,
-        access_token: data.access_token
+      // Fetch complete user profile data after successful authentication
+      const profileResponse = await fetch(`${API_BASE_URL}/users/me`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${data.access_token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      let userData
+      if (profileResponse.ok) {
+        const profileData = await profileResponse.json()
+        userData = {
+          email: profileData.email || email,
+          full_name: profileData.full_name || email.split('@')[0],
+          date_of_birth: profileData.date_of_birth || null,
+          access_token: data.access_token
+        }
+      } else {
+        // Fallback to basic user data if profile fetch fails
+        userData = {
+          email: email,
+          full_name: email.split('@')[0],
+          date_of_birth: null,
+          access_token: data.access_token
+        }
       }
       
       // Store token and user data in sessionStorage for persistence
