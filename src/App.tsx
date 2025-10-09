@@ -11,6 +11,8 @@ import ResetPassword from './pages/ResetPassword'
 import Profile from './pages/Profile'
 import CreateSchool from './pages/CreateSchool'
 import CreateClass from './pages/CreateClass'
+import MySchools from './pages/MySchools'
+import MyClasses from './pages/MyClasses'
 
 function AppContent() {
   const { isInitializing } = useAuth()
@@ -38,6 +40,8 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/create-school" element={<CreateSchool />} />
         <Route path="/create-class" element={<CreateClass />} />
+        <Route path="/my-schools" element={<MySchools />} />
+        <Route path="/my-classes" element={<MyClasses />} />
       </Routes>
     </>
   )

@@ -98,11 +98,25 @@ const Navbar = () => {
                         Create School
                       </Link>
                     <Link
+                        to="/my-schools"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                        onClick={closeMenu}
+                      >
+                        My Schools
+                      </Link>
+                    <Link
                         to="/create-class"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                         onClick={closeMenu}
                       >
                         Create Class
+                      </Link>
+                    <Link
+                        to="/my-classes"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                        onClick={closeMenu}
+                      >
+                        My Classes
                       </Link>
                     <button
                       onClick={handleLogout}
@@ -191,11 +205,25 @@ const Navbar = () => {
                         Create School
                       </Link>
                       <Link
+                        to="/my-schools"
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors text-center"
+                        onClick={closeMenu}
+                      >
+                        My Schools
+                      </Link>
+                      <Link
                         to="/create-class"
                         className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors text-center"
                         onClick={closeMenu}
                       >
                         Create Class
+                      </Link>
+                      <Link
+                        to="/my-classes"
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors text-center"
+                        onClick={closeMenu}
+                      >
+                        My Classes
                       </Link>
                       <button
                         onClick={handleLogout}
