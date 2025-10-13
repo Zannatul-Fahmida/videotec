@@ -13,6 +13,7 @@ import CreateSchool from './pages/CreateSchool'
 import CreateClass from './pages/CreateClass'
 import MySchools from './pages/MySchools'
 import MyClasses from './pages/MyClasses'
+import CreateCourses from './pages/CreateCourses'
 
 function AppContent() {
   const { isInitializing } = useAuth()
@@ -42,6 +43,7 @@ function AppContent() {
         <Route path="/create-class" element={<CreateClass />} />
         <Route path="/my-schools" element={<MySchools />} />
         <Route path="/my-classes" element={<MyClasses />} />
+        <Route path="/create-courses" element={<CreateCourses />} />
       </Routes>
     </>
   )

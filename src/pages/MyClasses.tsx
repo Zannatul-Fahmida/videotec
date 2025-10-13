@@ -11,23 +11,26 @@ interface School {
   roles: string[]
 }
 
+interface Teacher {
+  user_id: string
+  full_name: string
+}
+
 interface Class {
   class_id: string
   name: string
-  short_description: string
   level: string
-  day_of_week: string
+  day_of_week: number
   start_time: string
   end_time: string
-  school_id: string
-  created_at: string
+  teachers: Teacher[]
 }
 
 const MyClasses = () => {
   const [schools, setSchools] = useState<School[]>([])
   const [classes, setClasses] = useState<Class[]>([])
   const [selectedSchool, setSelectedSchool] = useState<string>('')
-  const [selectedRole, setSelectedRole] = useState<string>('')
+
   const [loading, setLoading] = useState(true)
   const [classesLoading, setClassesLoading] = useState(false)
   const [error, setError] = useState('')
@@ -85,10 +88,9 @@ const MyClasses = () => {
         
         setSchools(data)
         
-        // Auto-select first school and first role if available
-        if (data.length > 0 && data[0].roles.length > 0) {
+        // Auto-select first school if available
+        if (data.length > 0) {
           setSelectedSchool(data[0].school_id)
-          setSelectedRole(data[0].roles[0])
         }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to fetch schools'
@@ -104,24 +106,28 @@ const MyClasses = () => {
     }
   }, [user])
 
-  // Fetch classes when school or role changes
+  // Fetch classes when school changes
   useEffect(() => {
     const fetchClasses = async () => {
-      if (!selectedSchool || !selectedRole) return
+      if (!selectedSchool || !user?.access_token) return
 
       try {
         setClassesLoading(true)
         setError('')
 
-        console.log('Fetching classes for:', { selectedSchool, selectedRole })
-        console.log('API URL:', `${API_BASE_URL}/classes/by-role/${selectedSchool}/${selectedRole}`)
+        // Clean URL construction to avoid formatting issues
+        const apiUrl = `${API_BASE_URL}/classes/by-school/${selectedSchool}`
+        console.log('Fetching classes for:', { selectedSchool })
+        console.log('API URL:', apiUrl)
         
-        const response = await fetch(`${API_BASE_URL}/classes/by-role/${selectedSchool}/${selectedRole}`, {
+        const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${user?.access_token}`,
-            'Content-Type': 'application/json'
-          }
+            'Authorization': `Bearer ${user.access_token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          mode: 'cors'
         })
 
         console.log('Response status:', response.status)
@@ -137,6 +143,9 @@ const MyClasses = () => {
             errorData = { message: errorText }
           }
           
+          if (response.status === 401) {
+            throw new Error('Authentication failed. Please log in again.')
+          }
           if (response.status === 422 && errorData.detail) {
             const errorMessages = errorData.detail.map((err: any) => err.msg).join(', ')
             throw new Error(errorMessages)
@@ -155,7 +164,14 @@ const MyClasses = () => {
         
         setClasses(data)
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to fetch classes'
+        let errorMessage = 'Failed to fetch classes'
+        
+        if (err instanceof TypeError && err.message.includes('Failed to fetch')) {
+          errorMessage = 'Network error: Unable to connect to the server. This might be due to CORS policy or network issues.'
+        } else if (err instanceof Error) {
+          errorMessage = err.message
+        }
+        
         console.error('Fetch classes error:', err)
         setError(errorMessage)
         toast.error(errorMessage)
@@ -165,8 +181,10 @@ const MyClasses = () => {
       }
     }
 
-    fetchClasses()
-  }, [selectedSchool, selectedRole, user])
+    // Add a small delay to prevent rapid successive calls
+    const timeoutId = setTimeout(fetchClasses, 100)
+    return () => clearTimeout(timeoutId)
+  }, [selectedSchool, user])
 
   const copyClassId = async (classId: string) => {
     try {
@@ -191,15 +209,15 @@ const MyClasses = () => {
     })
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
+
+
+  const getDayName = (dayNumber: number) => {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    return days[dayNumber] || 'Unknown'
   }
 
-  const getDayColor = (day: string) => {
+  const getDayColor = (dayNumber: number) => {
+    const dayName = getDayName(dayNumber).toLowerCase()
     const colors: { [key: string]: string } = {
       'monday': 'bg-blue-100 text-blue-800',
       'tuesday': 'bg-green-100 text-green-800',
@@ -209,7 +227,7 @@ const MyClasses = () => {
       'saturday': 'bg-indigo-100 text-indigo-800',
       'sunday': 'bg-pink-100 text-pink-800'
     }
-    return colors[day.toLowerCase()] || 'bg-gray-100 text-gray-800'
+    return colors[dayName] || 'bg-gray-100 text-gray-800'
   }
 
   const getLevelColor = (level: string) => {
@@ -224,11 +242,6 @@ const MyClasses = () => {
   const getSelectedSchoolName = () => {
     const school = schools.find(s => s.school_id === selectedSchool)
     return school ? school.name : 'Select School'
-  }
-
-  const getAvailableRoles = () => {
-    const school = schools.find(s => s.school_id === selectedSchool)
-    return school ? school.roles : []
   }
 
   if (loading) {
@@ -258,10 +271,10 @@ const MyClasses = () => {
           </div>
         </div>
 
-        {/* School and Role Selection */}
+        {/* School Selection */}
         {schools.length > 0 && (
           <div className="bg-white rounded-lg shadow-xl p-6 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Select School
@@ -270,10 +283,6 @@ const MyClasses = () => {
                   value={selectedSchool}
                   onChange={(e) => {
                     setSelectedSchool(e.target.value)
-                    const school = schools.find(s => s.school_id === e.target.value)
-                    if (school && school.roles.length > 0) {
-                      setSelectedRole(school.roles[0])
-                    }
                   }}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
                 >
@@ -284,30 +293,12 @@ const MyClasses = () => {
                   ))}
                 </select>
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Select Role
-                </label>
-                <select
-                  value={selectedRole}
-                  onChange={(e) => setSelectedRole(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
-                  disabled={!selectedSchool}
-                >
-                  {getAvailableRoles().map((role) => (
-                    <option key={role} value={role}>
-                      {role.charAt(0).toUpperCase() + role.slice(1)}
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
             
-            {selectedSchool && selectedRole && (
+            {selectedSchool && (
               <div className="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
                 <p className="text-sm text-purple-700">
-                  <span className="font-medium">Viewing classes for:</span> {getSelectedSchoolName()} as {selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}
+                  <span className="font-medium">Viewing classes for:</span> {getSelectedSchoolName()}
                 </p>
               </div>
             )}
@@ -355,7 +346,7 @@ const MyClasses = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
             <h3 className="text-lg font-medium text-gray-900 mb-2">No Classes Found</h3>
-            <p className="text-gray-500 mb-6">No classes available for your current role in this school.</p>
+            <p className="text-gray-500 mb-6">No classes available for this school.</p>
             <button
               onClick={() => navigate('/create-class')}
               className="bg-[#BA40A4] text-white py-2 px-6 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
@@ -407,7 +398,12 @@ const MyClasses = () => {
                     </button>
                   </div>
 
-                  <p className="text-gray-600 mb-4">{classItem.short_description}</p>
+                  <p className="text-gray-600 mb-4">
+                    {classItem.teachers.length > 0 
+                      ? `Taught by: ${classItem.teachers.map(t => t.full_name).join(', ')}`
+                      : 'No teachers assigned'
+                    }
+                  </p>
                   
                   {/* Class Details */}
                   <div className="space-y-3 mb-4">
@@ -421,7 +417,7 @@ const MyClasses = () => {
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-gray-700">Day:</span>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDayColor(classItem.day_of_week)}`}>
-                        {classItem.day_of_week}
+                        {getDayName(classItem.day_of_week)}
                       </span>
                     </div>
                     
@@ -433,19 +429,32 @@ const MyClasses = () => {
                     </div>
                   </div>
 
-                  {/* Created Date */}
-                  <p className="text-sm text-gray-500 mb-4">
-                    Created: {formatDate(classItem.created_at)}
-                  </p>
+                  {/* Teachers */}
+                  {classItem.teachers.length > 0 && (
+                    <div className="mb-4">
+                      <span className="text-sm font-medium text-gray-700 block mb-2">Teachers:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {classItem.teachers.map((teacher) => (
+                          <span
+                            key={teacher.user_id}
+                            className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium"
+                          >
+                            {teacher.full_name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Action Button */}
                   <button
                     onClick={() => {
-                      toast.success(`Accessing ${classItem.name}`)
+                      toast.success(`Adding teacher to ${classItem.name}`)
+                      // Navigate to add teacher page or open modal
                     }}
                     className="w-full bg-[#BA40A4] text-white py-2 px-4 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
                   >
-                    Access Class
+                    Add Teacher
                   </button>
                 </div>
               </div>

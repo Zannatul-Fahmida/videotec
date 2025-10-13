@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 
@@ -7,6 +7,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
   const { user, logout } = useAuth()
+  const profileDropdownRef = useRef<HTMLDivElement>(null)
 
   // Handle scroll event to add shadow and background opacity when scrolled
   useEffect(() => {
@@ -23,6 +24,23 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
+
+  // Handle click outside profile dropdown to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+        setIsProfileDropdownOpen(false)
+      }
+    }
+
+    if (isProfileDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isProfileDropdownOpen])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -70,7 +88,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center">
             {user ? (
-              <div className="relative">
+              <div className="relative" ref={profileDropdownRef}>
                 <button
                   onClick={toggleProfileDropdown}
                   className="flex items-center space-x-3 rounded-full cursor-pointer p-2 transition-all"
@@ -117,6 +135,13 @@ const Navbar = () => {
                         onClick={closeMenu}
                       >
                         My Classes
+                      </Link>
+                    <Link
+                        to="/create-courses"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                        onClick={closeMenu}
+                      >
+                        Create Courses
                       </Link>
                     <button
                       onClick={handleLogout}
@@ -224,6 +249,13 @@ const Navbar = () => {
                         onClick={closeMenu}
                       >
                         My Classes
+                      </Link>
+                      <Link
+                        to="/create-courses"
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors text-center"
+                        onClick={closeMenu}
+                      >
+                        Create Courses
                       </Link>
                       <button
                         onClick={handleLogout}
