@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
@@ -15,6 +15,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const dateInputRef = useRef<HTMLInputElement>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -94,7 +95,7 @@ const Register = () => {
 
           <div className="space-y-2.5">
             {/* Full Name */}
-            <div className="relative w-[325px] h-[55px]">
+            <div className="relative md:max-w-[325px] h-[55px]">
               <input
                 type="text"
                 id="full_name"
@@ -111,19 +112,22 @@ const Register = () => {
             </div>
 
             {/* Date of Birth */}
-            <div className="relative w-full h-[55px]">
+            <div className="relative md:max-w-[325px] h-[55px]">
               <input
                 type="date"
                 id="date_of_birth"
                 name="date_of_birth"
                 value={formData.date_of_birth}
                 onChange={handleChange}
-                className="absolute inset-0 w-full h-full bg-transparent text-[#D9D9D9] placeholder-[#D9D9D9] px-6 font-roboto text-[14px] border border-[#8C8E97] rounded-[20px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] focus:outline-none"
+                ref={dateInputRef}
+                onFocus={() => dateInputRef.current?.showPicker?.()}
+                className="absolute inset-0 w-full h-full bg-transparent text-[#D9D9D9] placeholder-[#D9D9D9] px-6 pr-12 font-roboto text-[14px] border border-[#8C8E97] rounded-[20px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] focus:outline-none"
+                placeholder="MM/DD/YYYY"
               />
             </div>
 
             {/* Email */}
-            <div className="relative w-[325px] h-[55px]">
+            <div className="relative md:max-w-[325px] h-[55px]">
               <input
                 type="email"
                 id="email"
@@ -140,7 +144,7 @@ const Register = () => {
             </div>
 
             {/* Password */}
-            <div className="relative w-[325px] h-[55px]">
+            <div className="relative md:max-w-[325px] h-[55px]">
               <input
                 type="password"
                 id="password"
@@ -158,7 +162,7 @@ const Register = () => {
             </div>
 
             {/* Confirm Password */}
-            <div className="relative w-[325px] h-[55px]">
+            <div className="relative md:max-w-[325px] h-[55px]">
               <input
                 type="password"
                 id="confirmPassword"
@@ -177,11 +181,11 @@ const Register = () => {
           </div>
 
           {/* CTA Button */}
-          <div className="mt-6 w-[323px]">
+          <div className="mt-6 md:max-w-[323px]">
             <button
               type="submit"
               disabled={loading}
-              className="w-[323px] h-[49px] rounded-full bg-[rgba(186,64,164,0.4)] text-white font-roboto text-[16px] font-medium focus:outline-none"
+              className="w-full h-[49px] rounded-full bg-[rgba(186,64,164,0.4)] text-white font-roboto text-[16px] font-medium focus:outline-none"
             >
               {loading ? (
                 <span className="flex items-center justify-center">

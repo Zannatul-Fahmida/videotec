@@ -7,3 +7,8 @@
 .font-poppins {
   font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif;
 }
+
+/* Hide native WebKit date indicator to use custom icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
