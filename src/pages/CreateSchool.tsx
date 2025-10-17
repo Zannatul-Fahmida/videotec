@@ -138,7 +138,7 @@ const CreateSchool = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-[24px] bg-[#6DC03C] text-[#2E2E69] font-medium py-3 px-4 shadow-[0_8px_16px_rgba(6,20,40,0.30)] hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all font-poppins"
+                className="w-full rounded-[24px] bg-[#6DC03C] text-[#2E2E69] font-medium py-3 px-4 shadow-[0_8px_16px_rgba(6,20,40,0.30)] hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">

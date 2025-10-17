@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useAuth } from '../contexts/AuthContext'
+import Header from '../components/Header'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -111,157 +112,164 @@ const CreateClass = () => {
   }
 
   const daysOfWeek = [
-    { value: '1', label: '1 day per week' },
-    { value: '2', label: '2 days per week' },
-    { value: '3', label: '3 days per week' },
-    { value: '4', label: '4 days per week' },
-    { value: '5', label: '5 days per week' },
-    { value: '6', label: '6 days per week' },
-    { value: '7', label: '7 days per week' }
+    { value: '1', label: '1 day/wk' },
+    { value: '2', label: '2 days/wk' },
+    { value: '3', label: '3 days/wk' },
+    { value: '4', label: '4 days/wk' },
+    { value: '5', label: '5 days/wk' },
+    { value: '6', label: '6 days/wk' },
+    { value: '7', label: '7 days/wk' }
   ]
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-12 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-purple-700 via-purple-600 to-purple-500 p-6">
-          <h2 className="text-3xl font-bold text-white text-center">Create Class</h2>
-          <p className="text-white text-center mt-2 opacity-90">Add a new class to the system</p>
-        </div>
-        
-        <div className="p-8">
+    <div className="min-h-screen bg-[#272B69] py-8 px-4">
+<Header title='Create Class' />
+      <div className="md:max-w-[375px] mx-auto">
+      <h1 className="text-white text-2xl font-semibold tracking-wide mt-10 mb-8">Create Class</h1>
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-md text-sm">
-                <div className="flex">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  {error}
-                </div>
+              <div className="mb-4 rounded-[12px] border border-red-400 bg-[#343472] text-red-200 px-4 py-3 text-sm shadow-[0_6px_12px_rgba(6,20,40,0.22)]">
+                {error}
               </div>
             )}
             
-            {/* First row: Course Name, School Description, Course Level */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Course Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                  placeholder="Enter course name"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="short_description" className="block text-sm font-medium text-gray-700 mb-1">
-                  School Description
-                </label>
-                <input
-                  type="text"
-                  id="short_description"
-                  name="short_description"
-                  value={formData.short_description}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                  placeholder="Enter description"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1">
-                  Course Level
-                </label>
-                <input
-                  type="text"
-                  id="level"
-                  name="level"
-                  value={formData.level}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                  placeholder="Enter course level"
-                />
+            {/* Pill inputs matching screenshot */}
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Course Name"
+              className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white placeholder-white/80 px-4 shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none"
+            />
+
+            <input
+              type="text"
+              id="short_description"
+              name="short_description"
+              value={formData.short_description}
+              onChange={handleChange}
+              placeholder="Course Name"
+              className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white placeholder-white/80 px-4 shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none"
+            />
+
+            <div className="relative">
+              <input
+                type="text"
+                id="level"
+                name="level"
+                value={formData.level}
+                onChange={handleChange}
+                placeholder="Select Level    X X X X X"
+                className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white placeholder-white/80 px-4 pr-12 shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none"
+              />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-white">
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="12" cy="9" r="2" fill="currentColor" />
+                </svg>
               </div>
             </div>
 
-            {/* Second row: Days, Starting Time, End Time */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="day_of_week" className="block text-sm font-medium text-gray-700 mb-1">
-                  Days
-                </label>
+            {/* Days / Starting / End chips */}
+            <div className="mt-3 grid grid-cols-3 gap-3">
+              <div className="relative">
                 <select
-                   id="day_of_week"
-                   name="day_of_week"
-                   value={formData.day_of_week}
-                   onChange={handleChange}
-                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                 >
-                   <option value="">Select frequency</option>
-                   {daysOfWeek.map(day => (
-                     <option key={day.value} value={day.value}>
-                       {day.label}
-                     </option>
-                   ))}
-                 </select>
+                  id="day_of_week"
+                  name="day_of_week"
+                  value={formData.day_of_week}
+                  onChange={handleChange}
+                  className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white text-sm px-4 appearance-none pr-6 shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none"
+                >
+                  <option value="">Days</option>
+                  {daysOfWeek.map(day => (
+                    <option key={day.value} value={day.value}>
+                      {day.label}
+                    </option>
+                  ))}
+                </select>
               </div>
-              
-              <div>
-                <label htmlFor="start_time" className="block text-sm font-medium text-gray-700 mb-1">
-                  Starting Time
-                </label>
+              <div className="relative">
                 <input
                   type="time"
                   id="start_time"
                   name="start_time"
                   value={formData.start_time}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                  className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white px-3 pr-6 appearance-none shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none"
                 />
+                <button
+                   type="button"
+                   aria-label="Open time picker"
+                   onClick={() => {
+                     const el = document.getElementById('start_time') as any
+                     if (el?.showPicker) el.showPicker()
+                     else (el as HTMLInputElement)?.focus()
+                   }}
+                   className="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-white cursor-pointer focus:outline-none"
+                 >
+                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                     <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                     <path d="M12 6v6l4 2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                   </svg>
+                 </button>
               </div>
-              
-              <div>
-                <label htmlFor="end_time" className="block text-sm font-medium text-gray-700 mb-1">
-                  End Time
-                </label>
+              <div className="relative">
                 <input
                   type="time"
                   id="end_time"
                   name="end_time"
                   value={formData.end_time}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                  className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white px-3 pr-6 appearance-none shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none"
                 />
+                <button
+                   type="button"
+                   aria-label="Open time picker"
+                   onClick={() => {
+                     const el = document.getElementById('end_time') as any
+                     if (el?.showPicker) el.showPicker()
+                     else (el as HTMLInputElement)?.focus()
+                   }}
+                   className="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-white cursor-pointer focus:outline-none"
+                 >
+                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                     <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                     <path d="M12 6v6l4 2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                   </svg>
+                 </button>
               </div>
             </div>
 
-            {/* School ID field */}
-            <div>
-              <label htmlFor="school_id" className="block text-sm font-medium text-gray-700 mb-1">
-                School ID
-              </label>
-              <input
-                type="text"
-                id="school_id"
-                name="school_id"
-                value={formData.school_id}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                placeholder="Enter school ID"
-              />
-            </div>
+            {/* School ID field pill */}
+            <input
+              type="text"
+              id="school_id"
+              name="school_id"
+              value={formData.school_id}
+              onChange={handleChange}
+              placeholder="School ID"
+              className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white placeholder-white/80 px-4 shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none"
+            />
             
+            {/* Add Teacher button and selected name */}
+            <div className="flex justify-end">
+              <button
+                type="button"
+                className="mt-2 w-[170px] h-12 rounded-[24px] bg-[#BA40A466] text-white font-medium shadow-[0_6px_12px_rgba(6,20,40,0.22)] hover:opacity-95 focus:outline-none"
+              >
+                Add Teacher
+              </button>
+            </div>
+            {/* <div className="mt-3 text-white font-medium">Lise Vignaud</div> */}
+            
+            {/* Confirm */}
             <div className="pt-2">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#BA40A4] text-white py-3 px-4 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 font-medium"
+                className="w-full rounded-[24px] bg-[#6DC03C] text-[#2E2E69] font-medium py-3 px-4 shadow-[0_8px_16px_rgba(6,20,40,0.30)] hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">
@@ -275,7 +283,6 @@ const CreateClass = () => {
               </button>
             </div>
           </form>
-        </div>
       </div>
     </div>
   )

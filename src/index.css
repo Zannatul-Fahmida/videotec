@@ -12,3 +12,20 @@
 input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
+
+/* Hide native time picker icon to use custom overlay */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+}
+
+/* Invert spin/clear controls for better contrast */
+input[type="time"]::-webkit-clear-button,
+input[type="time"]::-webkit-inner-spin-button {
+  filter: invert(1);
+}
+
+/* Hint browsers to use dark UI for form controls */
+input[type="time"] {
+  color-scheme: dark;
+}
