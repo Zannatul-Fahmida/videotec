@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-interface HeaderProps {
-  title: string
-}
-
-const Header: React.FC<HeaderProps> = ({ title }) => {
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -38,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
         <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
       </button>
 
-      <div className="text-white font-poppins text-[18px] font-semibold">{title}</div>
+      <div className="text-white font-poppins text-[18px] font-semibold uppercase">Videotec</div>
 
       <div className="relative" ref={menuRef}>
         <button

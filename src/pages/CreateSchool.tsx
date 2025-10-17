@@ -83,7 +83,7 @@ const CreateSchool = () => {
 
   return (
     <div className="min-h-screen bg-[#272B69] py-8 px-4">
-      <Header title='Create School' />
+      <Header />
       <div className='md:max-w-[375px] mx-auto mt-10'>
       <h1 className="text-white text-2xl font-semibold tracking-wide">Create School</h1>
 

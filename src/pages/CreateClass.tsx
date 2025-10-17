@@ -123,7 +123,7 @@ const CreateClass = () => {
 
   return (
     <div className="min-h-screen bg-[#272B69] py-8 px-4">
-<Header title='Create Class' />
+<Header />
       <div className="md:max-w-[375px] mx-auto">
       <h1 className="text-white text-2xl font-semibold tracking-wide mt-10 mb-8">Create Class</h1>
           <form onSubmit={handleSubmit} className="space-y-5">
