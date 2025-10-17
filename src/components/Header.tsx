@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
       <div className="relative" ref={menuRef}>
         <button
           type="button"
-          className="p-2 rounded hover:bg-white/10 focus:outline-none"
+          className="p-2 rounded-full hover:bg-white/10 focus:outline-none"
           onClick={() => setIsOpen(v => !v)}
           aria-haspopup="true"
           aria-expanded={isOpen}
@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
               <li>
                 <Link
                   to="/profile"
-                  className="block w-full text-left font-poppins text-[20px] font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
+                  className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
                   onClick={closeMenu}
                   role="menuitem"
                 >
@@ -75,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
               <li>
                 <Link
                   to="/create-school"
-                  className="block w-full text-left font-poppins text-[20px] font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
+                  className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
                   onClick={closeMenu}
                   role="menuitem"
                 >
@@ -85,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
               <li>
                 <Link
                   to="/create-class"
-                  className="block w-full text-left font-poppins text-[20px] font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
+                  className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
                   onClick={closeMenu}
                   role="menuitem"
                 >
