@@ -2,7 +2,7 @@ import Header from "../components/Shared/Header"
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-[#272B69] py-8 px-4">
+    <div className="min-h-screen bg-[#2E2E69] py-8 px-4">
       <Header />
     <div className="container mx-auto p-4 text-center text-white md:max-w-[375px]">
       <h1 className="text-3xl font-bold mb-4">Welcome to Videotec</h1>

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useAuth } from '../contexts/AuthContext'
+import Header from '../components/Shared/Header'
+import Loading from '../components/Shared/Loading'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -40,19 +42,7 @@ const MyClasses = () => {
 
   // Show loading while initializing or if user data is being loaded
   if (isInitializing || isLoading) {
-    return (
-      <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          <div className="flex items-center justify-center">
-            <svg className="animate-spin h-8 w-8 text-purple-600 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span className="text-gray-700 font-medium">Loading...</span>
-          </div>
-        </div>
-      </div>
-    )
+    return <Loading fullPage />
   }
 
   // If user is not logged in, redirect to login
@@ -245,26 +235,15 @@ const MyClasses = () => {
   }
 
   if (loading) {
-    return (
-      <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          <div className="flex items-center justify-center">
-            <svg className="animate-spin h-8 w-8 text-purple-600 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span className="text-gray-700 font-medium">Loading schools...</span>
-          </div>
-        </div>
-      </div>
-    )
+    return <Loading message="Loading schools..." fullPage />
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-[#2E2E69] py-8 px-4">
+      <Header />
+      <div className="max-w-[375px] mx-auto mt-10">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-xl overflow-hidden mb-8">
+        <div className="bg-[#2E2E69] rounded-lg shadow-xl overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-purple-700 via-purple-600 to-purple-500 p-6">
             <h1 className="text-3xl font-bold text-white text-center">My Classes</h1>
             <p className="text-white text-center mt-2 opacity-90">Classes based on your role in each school</p>
@@ -273,31 +252,38 @@ const MyClasses = () => {
 
         {/* School Selection */}
         {schools.length > 0 && (
-          <div className="bg-white rounded-lg shadow-xl p-6 mb-8">
+          <div className="bg-[#2E2E69] rounded-lg shadow-xl p-6 mb-8">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Select School
                 </label>
-                <select
-                  value={selectedSchool}
-                  onChange={(e) => {
-                    setSelectedSchool(e.target.value)
-                  }}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
-                >
-                  {schools.map((school) => (
-                    <option key={school.school_id} value={school.school_id}>
-                      {school.name}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    value={selectedSchool}
+                    onChange={(e) => {
+                      setSelectedSchool(e.target.value)
+                    }}
+                    className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white px-4 pr-10 shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none appearance-none cursor-pointer"
+                  >
+                    {schools.map((school) => (
+                      <option key={school.school_id} value={school.school_id}>
+                        {school.name}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
             
             {selectedSchool && (
-              <div className="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                <p className="text-sm text-purple-700">
+              <div className="mt-4 p-3 bg-purple-50/10 rounded-lg border border-purple-200/20">
+                <p className="text-sm text-purple-200">
                   <span className="font-medium">Viewing classes for:</span> {getSelectedSchoolName()}
                 </p>
               </div>
@@ -331,15 +317,7 @@ const MyClasses = () => {
             </button>
           </div>
         ) : classesLoading ? (
-          <div className="bg-white rounded-lg shadow-xl p-12 text-center">
-            <div className="flex items-center justify-center">
-              <svg className="animate-spin h-8 w-8 text-purple-600 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <span className="text-gray-700 font-medium">Loading classes...</span>
-            </div>
-          </div>
+          <Loading message="Loading classes..." />
         ) : classes.length === 0 ? (
           <div className="bg-white rounded-lg shadow-xl p-12 text-center">
             <svg className="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -355,7 +333,7 @@ const MyClasses = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             {classes.map((classItem) => (
               <div key={classItem.class_id} className="bg-white rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
                 {/* Class Header */}

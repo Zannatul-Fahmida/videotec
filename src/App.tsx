@@ -1,33 +1,27 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import './App.css'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
+import Loading from './components/Shared/Loading'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import Profile from './pages/Profile'
-import CreateSchool from './pages/CreateSchool'
-import CreateClass from './pages/CreateClass'
 import MySchools from './pages/MySchools'
+import CreateSchool from './pages/CreateSchool'
 import MyClasses from './pages/MyClasses'
-import CreateCourses from './pages/CreateCourses'
+import CreateClass from './pages/CreateClass'
 import MyCourses from './pages/MyCourses'
+import CreateCourses from './pages/CreateCourses'
 import CourseDetails from './pages/CourseDetails'
+import './App.css'
 
 function AppContent() {
   const { isInitializing } = useAuth()
 
   if (isInitializing) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#BA40A4] mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    )
+    return <Loading message="Loading..." fullPage />
   }
 
   return (
