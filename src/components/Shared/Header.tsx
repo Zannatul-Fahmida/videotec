@@ -128,6 +128,16 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
+                    <Link
+                      to="/my-courses"
+                      className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
+                      onClick={closeMenu}
+                      role="menuitem"
+                    >
+                      my courses
+                    </Link>
+                  </li>
+                  <li>
                     <button
                           onClick={handleLogout}
                           className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none cursor-pointer"
