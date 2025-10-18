@@ -13,10 +13,20 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
 
-/* Hide native time picker icon to use custom overlay */
+/* Make native time picker icon white (already applied earlier) */
 input[type="time"]::-webkit-calendar-picker-indicator {
   opacity: 0;
   display: none;
+}
+
+/* Hide native date picker icon for custom overlay and use dark control theme */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+}
+
+input[type="date"] {
+  color-scheme: dark;
 }
 
 /* Invert spin/clear controls for better contrast */

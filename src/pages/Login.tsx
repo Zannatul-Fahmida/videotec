@@ -73,7 +73,7 @@ const Login = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className="absolute inset-0 w-full h-full bg-transparent text-[#D9D9D9] placeholder-[#D9D9D9] px-6 pr-12 font-roboto text-[14px] border border-[#8C8E97] rounded-[20px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] focus:outline-none"
-                placeholder="Email ID or Mobile number"
+                placeholder="Email"
               />
               <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#D9D9D9]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" strokeWidth="1.5"/>

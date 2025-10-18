@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import Header from '../components/Header'
+import Header from '../components/Shared/Header'
 import { useAuth } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'

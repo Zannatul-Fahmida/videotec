@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useAuth } from '../contexts/AuthContext'
+import Header from '../components/Shared/Header'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -97,80 +98,74 @@ const CreateCourses = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-12 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-purple-700 via-purple-600 to-purple-500 p-6">
-          <h2 className="text-3xl font-bold text-white text-center">Create Course</h2>
-          <p className="text-white text-center mt-2 opacity-90">Add a new course to the system</p>
-        </div>
-        
-        <div className="p-4 md:p-8">
+    <div className="min-h-screen bg-[#272B69] py-8 px-4">
+      <Header />
+      <div className="md:max-w-[375px] mx-auto mt-10">
+        <h2 className="text-white text-2xl font-semibold tracking-wide">Create Course</h2>
+
+        <div className="md:max-w-[375px] mx-auto mt-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-md text-sm">
-                <div className="flex">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  {error}
-                </div>
+              <div className="mb-4 rounded-[12px] border border-red-400 bg-[#343472] text-red-200 px-4 py-3 text-sm shadow-[0_6px_12px_rgba(6,20,40,0.22)]">
+                {error}
               </div>
             )}
-            
-            {/* Course Description */}
-            <div>
-              <label htmlFor="short_description" className="block text-sm font-medium text-gray-700 mb-1">
-                Course Description
-              </label>
-              <textarea
-                id="short_description"
-                name="short_description"
-                value={formData.short_description}
+
+            {/* Course Description pill */}
+            <input
+              type="text"
+              id="short_description"
+              name="short_description"
+              value={formData.short_description}
+              onChange={handleChange}
+              placeholder="Course Description"
+              className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white placeholder-white/80 px-4 shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none"
+            />
+
+            {/* Date pill with calendar icon */}
+            <div className="relative">
+              <input
+                type="date"
+                id="date"
+                name="date"
+                value={formData.date}
                 onChange={handleChange}
-                rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-vertical"
-                placeholder="Enter a short description of the course"
+                className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white px-4 pr-12 appearance-none shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none"
               />
+              <button
+                type="button"
+                aria-label="Open date picker"
+                onClick={() => {
+                  const el = document.getElementById('date') as any
+                  if (el?.showPicker) el.showPicker()
+                  else (el as HTMLInputElement)?.focus()
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-white cursor-pointer focus:outline-none"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <rect x="3" y="5" width="18" height="16" rx="2" strokeWidth="2" />
+                  <path d="M16 3v4M8 3v4M3 11h18" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
             </div>
 
-            {/* Date and Class ID row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
-                  Course Date
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="class_id" className="block text-sm font-medium text-gray-700 mb-1">
-                  Class ID
-                </label>
-                <input
-                  type="text"
-                  id="class_id"
-                  name="class_id"
-                  value={formData.class_id}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                  placeholder="Enter class ID"
-                />
-              </div>
-            </div>
-            
+            {/* Class ID pill */}
+            <input
+              type="text"
+              id="class_id"
+              name="class_id"
+              value={formData.class_id}
+              onChange={handleChange}
+              placeholder="Class ID"
+              className="w-full h-12 rounded-[18px] bg-[#6F6D95] text-white placeholder-white/80 px-4 shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none"
+            />
+
+            {/* Confirm pill */}
             <div className="pt-2">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#BA40A4] text-white py-3 px-4 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 font-medium"
+                className="w-full rounded-[24px] bg-[#6DC03C] text-[#2E2E69] font-medium py-3 px-4 shadow-[0_8px_16px_rgba(6,20,40,0.30)] hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useAuth } from '../contexts/AuthContext'
-import Header from '../components/Header'
+import Header from '../components/Shared/Header'
 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
