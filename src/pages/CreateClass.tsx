@@ -22,12 +22,6 @@ const CreateClass = () => {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
-  // Redirect to login if user is not authenticated
-  if (!user) {
-    navigate('/login')
-    return null
-  }
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
@@ -65,7 +59,7 @@ const CreateClass = () => {
       const response = await fetch(`${API_BASE_URL}/classes/`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${user.access_token}`,
+          'Authorization': `Bearer ${user?.access_token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(requestBody)

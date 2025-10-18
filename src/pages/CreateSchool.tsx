@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useAuth } from '../contexts/AuthContext'
 import Header from '../components/Shared/Header'
@@ -16,13 +15,6 @@ const CreateSchool = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const { user } = useAuth()
-  const navigate = useNavigate()
-
-  // Redirect to login if user is not authenticated
-  if (!user) {
-    navigate('/login')
-    return null
-  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -48,13 +40,10 @@ const CreateSchool = () => {
       const response = await fetch(`${API_BASE_URL}/schools/`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${user.access_token}`,
+          'Authorization': `Bearer ${user?.access_token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          name: formData.name,
-          address: formData.address
-        })
+        body: JSON.stringify(formData)
       })
 
       const data = await response.json()

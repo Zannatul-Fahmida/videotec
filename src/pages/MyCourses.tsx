@@ -56,12 +56,6 @@ const MyCourses = () => {
     return <Loading fullPage />
   }
 
-  // If user is not logged in, redirect to login
-  if (!user) {
-    navigate('/login')
-    return null
-  }
-
   // Fetch schools on component mount
   useEffect(() => {
     const fetchMySchools = async () => {
@@ -72,7 +66,7 @@ const MyCourses = () => {
         const response = await fetch(`${API_BASE_URL}/schools/my-schools`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${user.access_token}`,
+            'Authorization': `Bearer ${user?.access_token}`,
             'Content-Type': 'application/json'
           }
         })
@@ -121,7 +115,7 @@ const MyCourses = () => {
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${user.access_token}`,
+            'Authorization': `Bearer ${user?.access_token}`,
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
@@ -195,7 +189,7 @@ const MyCourses = () => {
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${user.access_token}`,
+            'Authorization': `Bearer ${user?.access_token}`,
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
@@ -365,26 +359,26 @@ const MyCourses = () => {
 
         {/* No Selection State */}
         {!selectedClass && !coursesLoading && (
-          <div className="bg-white rounded-lg shadow-xl p-12 text-center">
+          <div className="bg-[#2E2E69] rounded-lg shadow-xl p-12 text-center">
             <svg className="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Select a Class</h3>
-            <p className="text-gray-500">Choose a school and class to view available courses.</p>
+            <h3 className="text-lg font-medium text-white mb-2">Select a Class</h3>
+            <p className="text-gray-300">Choose a school and class to view available courses.</p>
           </div>
         )}
 
         {/* No Courses Found */}
         {selectedClass && !coursesLoading && courses.length === 0 && (
-          <div className="bg-white rounded-lg shadow-xl p-12 text-center">
+          <div className="bg-[#2E2E69] rounded-lg shadow-xl p-12 text-center">
             <svg className="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Courses Found</h3>
-            <p className="text-gray-500 mb-6">There are no courses available for the selected class.</p>
+            <h3 className="text-lg font-medium text-white mb-2">No Courses Found</h3>
+            <p className="text-gray-300 mb-6">There are no courses available for the selected class.</p>
             <button
               onClick={() => navigate('/create-courses')}
-              className="bg-[#BA40A4] text-white py-2 px-6 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
+              className="bg-[#BA40A466] text-white py-2 px-6 rounded-full hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
             >
               Create Course
             </button>
@@ -397,7 +391,7 @@ const MyCourses = () => {
             {courses.map((course) => (
               <div 
                 key={course.course_id} 
-                className="bg-white rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
+                className="bg-[#2E2E69] rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
                 onClick={() => navigate(`/course-details/${course.course_id}`)}
               >
                 {/* Course Header */}
@@ -412,7 +406,7 @@ const MyCourses = () => {
                 {/* Course Info */}
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-xl font-bold text-gray-900 flex-1">Course </h3>
+                    <h3 className="text-xl font-bold text-white flex-1">Course </h3>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -443,17 +437,17 @@ const MyCourses = () => {
                     </button>
                   </div>
 
-                  <p className="text-gray-600 mb-4 line-clamp-3">
+                  <p className="text-gray-400 mb-4 line-clamp-3">
                     {course.short_description || 'No description available'}
                   </p>
 
                   {/* Dates */}
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-500">
-                      Course Date: {formatDate(course.date)}
+                    <p className="text-sm text-gray-200">
+                      <span className='font-semibold'>Course Date:</span> {formatDate(course.date)}
                     </p>
-                    <p className="text-sm text-gray-500">
-                      Created: {formatDate(course.created_at)}
+                    <p className="text-sm text-gray-200">
+                      <span className='font-semibold'>Created:</span> {formatDate(course.created_at)}
                     </p>
                   </div>
                 </div>

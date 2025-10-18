@@ -18,12 +18,6 @@ const Profile = () => {
     return <Loading message="Loading profile..." fullPage />
   }
 
-  // If user is not logged in, redirect to login
-  if (!user) {
-    navigate('/login')
-    return null
-  }
-
   const handleImageClick = () => {
     fileInputRef.current?.click()
   }
@@ -92,14 +86,14 @@ const Profile = () => {
               {profileImage ? (
                 <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <span className="text-white text-2xl font-bold">{getInitials(user.full_name)}</span>
+                <span className="text-white text-2xl font-bold">{getInitials(user?.full_name || '')}</span>
               )}
             </div>
           </div>
           <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
 
           {/* Name */}
-          <h3 className="mt-4 text-white text-[24px] font-bold capitalize">{user.full_name}</h3>
+          <h3 className="mt-4 text-white text-[24px] font-bold capitalize">{user?.full_name}</h3>
           {/* Points pill */}
           <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-linear-to-r from-[#1E88E5] to-[#005CB9] text-white shadow">
             <svg className="w-4 h-4 text-yellow-300" viewBox="0 0 24 24" fill="currentColor">
@@ -120,7 +114,7 @@ const Profile = () => {
                 </svg>
               <span className="text-sm text-gray-300">Full Name</span>
             </div>
-            <span className="text-sm text-gray-300">{user.full_name}</span>
+            <span className="text-sm text-gray-300">{user?.full_name}</span>
           </div>
           {/* Email row */}
           <div className="flex items-center justify-between px-4 py-3 bg-[#2E2E69] rounded-[14px] shadow-[0_6px_12px_rgba(6,20,40,0.22)]">
@@ -130,7 +124,7 @@ const Profile = () => {
                 </svg>
               <span className="text-sm text-gray-300">Email</span>
             </div>
-            <span className="text-sm text-gray-300">{user.email}</span>
+            <span className="text-sm text-gray-300">{user?.email}</span>
           </div>
           {/* DOB row */}
           <div className="flex items-center justify-between px-4 py-3 bg-[#2E2E69] rounded-[14px] shadow-[0_6px_12px_rgba(6,20,40,0.22)]">
@@ -140,7 +134,7 @@ const Profile = () => {
                 </svg>
               <span className="text-sm text-gray-300">Date of birth</span>
             </div>
-            <span className="text-sm text-gray-300">{user.date_of_birth ? user.date_of_birth : mockDateOfBirth}</span>
+            <span className="text-sm text-gray-300">{user?.date_of_birth ? user.date_of_birth : mockDateOfBirth}</span>
           </div>
         </div>
 

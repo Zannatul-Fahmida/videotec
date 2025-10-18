@@ -45,12 +45,6 @@ const MyClasses = () => {
     return <Loading fullPage />
   }
 
-  // If user is not logged in, redirect to login
-  if (!user) {
-    navigate('/login')
-    return null
-  }
-
   // Fetch schools on component mount
   useEffect(() => {
     const fetchMySchools = async () => {
@@ -61,7 +55,7 @@ const MyClasses = () => {
         const response = await fetch(`${API_BASE_URL}/schools/my-schools`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${user.access_token}`,
+            'Authorization': `Bearer ${user?.access_token}`,
             'Content-Type': 'application/json'
           }
         })
@@ -113,7 +107,7 @@ const MyClasses = () => {
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${user.access_token}`,
+            'Authorization': `Bearer ${user?.access_token}`,
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
@@ -303,15 +297,15 @@ const MyClasses = () => {
         )}
 
         {schools.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-xl p-12 text-center">
+          <div className="bg-[#2E2E69] rounded-lg shadow-xl p-12 text-center">
             <svg className="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Schools Found</h3>
-            <p className="text-gray-500 mb-6">You don't have access to any schools yet.</p>
+            <h3 className="text-lg font-medium text-white mb-2">No Schools Found</h3>
+            <p className="text-gray-300 mb-6">You don't have access to any schools yet.</p>
             <button
               onClick={() => navigate('/create-school')}
-              className="bg-[#BA40A4] text-white py-2 px-6 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
+              className="bg-[#BA40A466] text-white py-2 px-6 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
             >
               Create School
             </button>
@@ -319,15 +313,15 @@ const MyClasses = () => {
         ) : classesLoading ? (
           <Loading message="Loading classes..." />
         ) : classes.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-xl p-12 text-center">
+          <div className="bg-[#2E2E69] rounded-lg shadow-xl p-12 text-center">
             <svg className="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Classes Found</h3>
-            <p className="text-gray-500 mb-6">No classes available for this school.</p>
+            <h3 className="text-lg font-medium text-white mb-2">No Classes Found</h3>
+            <p className="text-gray-300 mb-6">No classes available for this school.</p>
             <button
               onClick={() => navigate('/create-class')}
-              className="bg-[#BA40A4] text-white py-2 px-6 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
+              className="bg-[#BA40A466] text-white py-2 px-6 rounded-full hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
             >
               Create Class
             </button>
@@ -335,7 +329,7 @@ const MyClasses = () => {
         ) : (
           <div className="grid grid-cols-1 gap-6">
             {classes.map((classItem) => (
-              <div key={classItem.class_id} className="bg-white rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+              <div key={classItem.class_id} className="bg-[#2E2E69] rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white">
                 {/* Class Header */}
                 <div className="h-32 bg-gradient-to-br from-purple-400 to-purple-600 relative overflow-hidden">
                   <div className="flex items-center justify-center h-full">
@@ -348,7 +342,7 @@ const MyClasses = () => {
                 {/* Class Info */}
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-xl font-bold text-gray-900 flex-1">{classItem.name}</h3>
+                    <h3 className="text-xl font-bold flex-1">{classItem.name}</h3>
                     <button
                       onClick={() => copyClassId(classItem.class_id)}
                       className={`ml-3 flex items-center px-2 py-1 rounded-md text-xs font-medium transition-all duration-200 ${
@@ -376,7 +370,7 @@ const MyClasses = () => {
                     </button>
                   </div>
 
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-300 mb-4">
                     {classItem.teachers.length > 0 
                       ? `Taught by: ${classItem.teachers.map(t => t.full_name).join(', ')}`
                       : 'No teachers assigned'
@@ -386,22 +380,22 @@ const MyClasses = () => {
                   {/* Class Details */}
                   <div className="space-y-3 mb-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Level:</span>
+                      <span className="text-sm font-medium text-gray-200">Level:</span>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getLevelColor(classItem.level)}`}>
                         {classItem.level}
                       </span>
                     </div>
                     
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Day:</span>
+                      <span className="text-sm font-medium text-gray-200">Day:</span>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDayColor(classItem.day_of_week)}`}>
                         {getDayName(classItem.day_of_week)}
                       </span>
                     </div>
                     
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Time:</span>
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm font-medium text-gray-200">Time:</span>
+                      <span className="text-sm text-gray-300">
                         {formatTime(classItem.start_time)} - {formatTime(classItem.end_time)}
                       </span>
                     </div>
@@ -410,7 +404,7 @@ const MyClasses = () => {
                   {/* Teachers */}
                   {classItem.teachers.length > 0 && (
                     <div className="mb-4">
-                      <span className="text-sm font-medium text-gray-700 block mb-2">Teachers:</span>
+                      <span className="text-sm font-medium text-gray-200 block mb-2">Teachers:</span>
                       <div className="flex flex-wrap gap-2">
                         {classItem.teachers.map((teacher) => (
                           <span

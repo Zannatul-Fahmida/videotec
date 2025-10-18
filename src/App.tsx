@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import Loading from './components/Shared/Loading'
+import ProtectedRoute from './components/Shared/ProtectedRoute'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -27,19 +28,22 @@ function AppContent() {
   return (
     <>
       <Routes>
+        {/* Public routes - accessible by any user */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/create-school" element={<CreateSchool />} />
-        <Route path="/create-class" element={<CreateClass />} />
-        <Route path="/my-schools" element={<MySchools />} />
-        <Route path="/my-classes" element={<MyClasses />} />
-        <Route path="/create-courses" element={<CreateCourses />} />
-        <Route path="/my-courses" element={<MyCourses />} />
-        <Route path="/course-details/:courseId" element={<CourseDetails />} />
+        
+        {/* Protected routes - only accessible by authenticated users */}
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/create-school" element={<ProtectedRoute><CreateSchool /></ProtectedRoute>} />
+        <Route path="/create-class" element={<ProtectedRoute><CreateClass /></ProtectedRoute>} />
+        <Route path="/my-schools" element={<ProtectedRoute><MySchools /></ProtectedRoute>} />
+        <Route path="/my-classes" element={<ProtectedRoute><MyClasses /></ProtectedRoute>} />
+        <Route path="/create-courses" element={<ProtectedRoute><CreateCourses /></ProtectedRoute>} />
+        <Route path="/my-courses" element={<ProtectedRoute><MyCourses /></ProtectedRoute>} />
+        <Route path="/course-details/:courseId" element={<ProtectedRoute><CourseDetails /></ProtectedRoute>} />
       </Routes>
     </>
   )

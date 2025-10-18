@@ -76,7 +76,7 @@ const CourseDetails = () => {
       const response = await fetch(`${API_BASE_URL}/courses/${courseId}/videos`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${user.access_token}`,
+          'Authorization': `Bearer ${user?.access_token}`,
           'Content-Type': 'application/json'
         }
       })
@@ -134,7 +134,7 @@ const CourseDetails = () => {
       const response = await fetch(`${API_BASE_URL}/courses/${courseId}/videos`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${user.access_token}`
+          'Authorization': `Bearer ${user?.access_token}`
           // Don't set Content-Type for FormData, let browser set it with boundary
         },
         body: formData
@@ -190,16 +190,16 @@ const CourseDetails = () => {
     return (
       <div className="min-h-screen bg-[#2E2E69] py-8 px-4">
         <Header />
-        <div className="max-w-[375px] mx-auto pt-10">
-          <div className="bg-white rounded-lg shadow-xl p-12 text-center">
+        <div className="md:max-w-[375px] mx-auto pt-10">
+          <div className="bg-[#2E2E69] rounded-lg shadow-xl p-12 text-center">
             <svg className="mx-auto h-16 w-16 text-red-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
             </svg>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Course Not Found</h3>
-            <p className="text-gray-500 mb-6">{error || 'The requested course could not be found.'}</p>
+            <h3 className="text-lg font-medium text-white mb-2">Course Not Found</h3>
+            <p className="text-gray-300 mb-6">{error || 'The requested course could not be found.'}</p>
             <button
               onClick={() => navigate('/my-courses')}
-              className="bg-[#BA40A4] text-white py-2 px-6 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
+              className="bg-[#BA40A466] text-white py-2 px-6 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
             >
               Back to Courses
             </button>
@@ -226,7 +226,7 @@ const CourseDetails = () => {
         </button>
 
         {/* Course Details Card */}
-        <div className="bg-white rounded-lg shadow-xl overflow-hidden mb-8">
+        <div className="bg-[#2E2E69] rounded-lg shadow-xl overflow-hidden mb-8">
           {/* Course Header */}
           <div className="h-32 bg-gradient-to-br from-purple-400 to-purple-600 relative overflow-hidden">
             <div className="flex items-center justify-center h-full">
@@ -239,10 +239,10 @@ const CourseDetails = () => {
           {/* Course Info */}
           <div className="p-6">
             <div className="flex items-start justify-between mb-4">
-              <h1 className="text-2xl font-bold text-gray-900 flex-1">Course Details</h1>
+              <h1 className="text-2xl font-bold text-white flex-1">Course Details</h1>
               <button
                 onClick={() => setIsUploadModalOpen(true)}
-                className="ml-3 bg-[#BA40A4] text-white p-2 rounded-full hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 shadow-lg"
+                className="ml-3 bg-[#BA40A466] text-white p-2 rounded-full hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 shadow-lg"
                 title="Upload Video"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -251,25 +251,25 @@ const CourseDetails = () => {
               </button>
             </div>
 
-            <p className="text-gray-600 mb-6 leading-relaxed">
+            <p className="text-gray-300 mb-6 leading-relaxed">
               {course.short_description || 'No description available'}
             </p>
 
             {/* Course Metadata */}
-            <div className="space-y-3 border-t border-gray-200 pt-4">
-              <div className="flex items-center text-sm text-gray-500">
+            <div className="space-y-3 border-t border-gray-500 pt-4">
+              <div className="flex items-center text-sm text-gray-200">
                 <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h6m-6 0l-1 12a2 2 0 002 2h6a2 2 0 002-2L15 7" />
                 </svg>
                 Course ID: {course.course_id}
               </div>
-              <div className="flex items-center text-sm text-gray-500">
+              <div className="flex items-center text-sm text-gray-200">
                 <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h6m-6 0l-1 12a2 2 0 002 2h6a2 2 0 002-2L15 7" />
                 </svg>
                 Course Date: {formatDate(course.date)}
               </div>
-              <div className="flex items-center text-sm text-gray-500">
+              <div className="flex items-center text-sm text-gray-200">
                 <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>

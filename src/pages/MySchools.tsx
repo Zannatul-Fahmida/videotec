@@ -29,12 +29,6 @@ const MySchools = () => {
     return <Loading fullPage />
   }
 
-  // If user is not logged in, redirect to login
-  if (!user) {
-    navigate('/login')
-    return null
-  }
-
   useEffect(() => {
     const fetchMySchools = async () => {
       try {
@@ -44,7 +38,7 @@ const MySchools = () => {
         const response = await fetch(`${API_BASE_URL}/schools/my-schools`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${user.access_token}`,
+            'Authorization': `Bearer ${user?.access_token}`,
             'Content-Type': 'application/json'
           }
         })
@@ -144,7 +138,7 @@ const MySchools = () => {
             <p className="text-gray-300 mb-6">You don't have access to any schools yet.</p>
             <button
               onClick={() => navigate('/create-school')}
-              className="bg-[#BA40A4] text-white py-2 px-6 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
+              className="bg-[#BA40A466] text-white py-2 px-6 rounded-full hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
             >
               Create School
             </button>
