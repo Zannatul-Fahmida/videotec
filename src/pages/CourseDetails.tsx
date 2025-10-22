@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useAuth } from '../contexts/AuthContext'
@@ -24,6 +24,181 @@ interface Video {
     user_id: string
     full_name: string
   }
+}
+
+// Custom overlay video player matching the reference UI
+const formatTime = (seconds: number) => {
+  if (!isFinite(seconds)) return '0:00'
+  const m = Math.floor(seconds / 60)
+  const s = Math.floor(seconds % 60)
+  return `${m}:${s.toString().padStart(2, '0')}`
+}
+
+const CustomVideoPlayer: React.FC<{ src: string; title?: string }> = ({ src, title }) => {
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
+  const [duration, setDuration] = useState(0)
+  const [currentTime, setCurrentTime] = useState(0)
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    const onLoaded = () => setDuration(v.duration || 0)
+    const onTime = () => setCurrentTime(v.currentTime || 0)
+    const onPlay = () => setIsPlaying(true)
+    const onPause = () => setIsPlaying(false)
+    v.addEventListener('loadedmetadata', onLoaded)
+    v.addEventListener('timeupdate', onTime)
+    v.addEventListener('play', onPlay)
+    v.addEventListener('pause', onPause)
+    return () => {
+      v.removeEventListener('loadedmetadata', onLoaded)
+      v.removeEventListener('timeupdate', onTime)
+      v.removeEventListener('play', onPlay)
+      v.removeEventListener('pause', onPause)
+    }
+  }, [])
+
+  const togglePlay = () => {
+    const v = videoRef.current
+    if (!v) return
+    if (v.paused) {
+      v.play()
+    } else {
+      v.pause()
+    }
+  }
+
+  const skipBy = (seconds: number) => {
+    const v = videoRef.current
+    if (!v) return
+    v.currentTime = Math.max(0, Math.min(v.currentTime + seconds, v.duration || v.currentTime))
+  }
+
+  const toggleMute = () => {
+    const v = videoRef.current
+    if (!v) return
+    v.muted = !v.muted
+    setIsMuted(v.muted)
+  }
+
+  const enterPiP = async () => {
+    const v = videoRef.current as any
+    const pipDoc = document as any
+    if (!v) return
+    try {
+      if (pipDoc.pictureInPictureEnabled && !pipDoc.pictureInPictureElement) {
+        await v.requestPictureInPicture()
+      }
+    } catch (e) {
+      console.warn('PiP not available', e)
+    }
+  }
+
+  const toggleFullscreen = async () => {
+    const v = videoRef.current as any
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen()
+      } else if (v && v.requestFullscreen) {
+        await v.requestFullscreen()
+      }
+    } catch (e) {
+      console.warn('Fullscreen error', e)
+    }
+  }
+
+  return (
+    <div className="relative w-full rounded-md overflow-hidden bg-black">
+      <video
+        ref={videoRef}
+        src={src}
+        className="w-full h-full"
+        preload="metadata"
+        playsInline
+      />
+
+      {/* Top-right actions */}
+      <div className="absolute top-3 right-3 flex gap-2">
+        <button
+          onClick={enterPiP}
+          className="p-2 rounded-full bg-[#00000066] text-white hover:bg-[#00000099] transition"
+          title="Picture-in-Picture"
+        >
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 6a3 3 0 013-3h12a3 3 0 013 3v6h-2V6a1 1 0 00-1-1H6a1 1 0 00-1 1v12a1 1 0 001 1h6v2H6a3 3 0 01-3-3V6z"></path>
+            <rect x="13" y="13" width="8" height="6" rx="1"></rect>
+          </svg>
+        </button>
+        <button
+          onClick={toggleMute}
+          className="p-2 rounded-full bg-[#00000066] text-white hover:bg-[#00000099] transition"
+          title={isMuted ? 'Unmute' : 'Mute'}
+        >
+          {isMuted ? (
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M5 9v6h4l5 5V4L9 9H5z"></path>
+              <path d="M19 7l-2 2m0 0l-2 2m2-2l2 2m-2-2l-2-2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+            </svg>
+          ) : (
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M5 9v6h4l5 5V4L9 9H5z"></path>
+              <path d="M16 7a5 5 0 010 10" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+            </svg>
+          )}
+        </button>
+        <button
+          onClick={toggleFullscreen}
+          className="p-2 rounded-full bg-[#00000066] text-white hover:bg-[#00000099] transition"
+          title="Fullscreen"
+        >
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7 7h4V5H5v6h2V7zm10 0v4h2V5h-6v2h4zm0 10h-4v2h6v-6h-2v4zM7 17v-4H5v6h6v-2H7z"></path>
+          </svg>
+        </button>
+      </div>
+
+      {/* Center controls */}
+      <div className="absolute inset-0 flex items-center justify-center gap-4 pointer-events-none">
+        <button
+          onClick={() => skipBy(-10)}
+          className="pointer-events-auto p-2 md:p-3 rounded-full bg-[#00000066] text-white hover:bg-[#00000099] transition"
+          title="Back 10s"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chevron-left-icon lucide-chevron-left w-5 h-5"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button
+          onClick={togglePlay}
+          className="pointer-events-auto p-3 md:p-4 rounded-full bg-[#00000066] text-white hover:bg-[#00000099] transition shadow-lg"
+          title={isPlaying ? 'Pause' : 'Play'}
+        >
+          {isPlaying ? (
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 5h4v14H6zM14 5h4v14h-4z"></path>
+            </svg>
+          ) : (
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 6v12l10-6-10-6z"></path>
+            </svg>
+          )}
+        </button>
+        <button
+          onClick={() => skipBy(10)}
+          className="pointer-events-auto p-2 md:p-3 rounded-full bg-[#00000066] text-white hover:bg-[#00000099] transition"
+          title="Forward 10s"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chevron-right-icon lucide-chevron-right w-5 h-5"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      {/* Bottom overlay */}
+      <div className="absolute bottom-0 left-0 right-0 px-4 py-3 flex items-center justify-between bg-gradient-to-t from-[#00000099] to-transparent">
+        <span className="text-white text-sm font-medium truncate">{title || 'Untitled Video'}</span>
+        <span className="text-white text-sm text-nowrap">{`${formatTime(currentTime)} / ${formatTime(duration)}`}</span>
+      </div>
+    </div>
+  )
 }
 
 const CourseDetails = () => {
@@ -306,19 +481,9 @@ const CourseDetails = () => {
                     <p className="text-sm text-gray-200">Type: {video.video_type}</p>
                     <p className="text-sm text-gray-300">Uploaded by: {video.uploaded_by.full_name}</p>
                   </div>
-                  
                   {/* Video Player */}
                   <div className="mt-3">
-                    <video
-                      src={video.video_url}
-                      controls
-                      className="w-full rounded-md bg-black"
-                      style={{ maxHeight: '400px' }}
-                      preload="metadata"
-                      controlsList="nodownload"
-                    >
-                      Your browser does not support the video tag.
-                    </video>
+                    <CustomVideoPlayer src={video.video_url} title={`Video ${video.video_id}`} />
                   </div>
                 </div>
               ))}
