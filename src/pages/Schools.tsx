@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useAuth } from '../contexts/AuthContext'
 import Loading from '../components/Shared/Loading'
@@ -23,6 +24,7 @@ const Schools = () => {
   const [error, setError] = useState('')
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const { user, isLoading, isInitializing } = useAuth()
+  const navigate = useNavigate()
 
   // Show loading while initializing or if user data is being loaded
   if (isInitializing || isLoading) {
@@ -156,11 +158,19 @@ const Schools = () => {
         ) : (
           <div className="space-y-4">
             {schools.map((school) => (
-              <div key={school.school_id} className="bg-[#3F4851] rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 relative">
+              <div 
+                key={school.school_id} 
+                className="bg-[#3F4851] rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 relative cursor-pointer"
+                onClick={() => navigate(`/classes/${school.school_id}`)}
+              >
                 {/* Settings Icon - Top Right */}
                 <button
                   className="absolute top-3 right-3 w-8 h-8 text-white rounded-full flex items-center justify-center hover:text-gray-100 transition-colors duration-200 z-10 cursor-pointer"
                   aria-label="Settings"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    // Handle settings click here
+                  }}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -204,12 +214,20 @@ const Schools = () => {
                       <button
                         className="w-4 h-4 text-white rounded-full flex items-center justify-center hover:text-gray-100 transition-colors duration-200 cursor-pointer"
                         aria-label="View details"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          // Handle view details click here
+                        }}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-graduation-cap-icon lucide-graduation-cap"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
                       </button>
                       <button
                         className="w-4 h-4 text-white rounded-full flex items-center justify-center hover:text-gray-100 transition-colors duration-200 cursor-pointer"
                         aria-label="More options"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          // Handle more options click here
+                        }}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-briefcase-icon lucide-briefcase"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
                       </button>

@@ -10,13 +10,13 @@ import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import Profile from './pages/Profile'
 import CreateSchool from './pages/CreateSchool'
-import MyClasses from './pages/MyClasses'
 import CreateClass from './pages/CreateClass'
 import MyCourses from './pages/MyCourses'
 import CreateCourses from './pages/CreateCourses'
 import CourseDetails from './pages/CourseDetails'
 import './App.css'
 import Schools from './pages/Schools'
+import Classes from './pages/Classes'
 
 function AppContent() {
   const { isInitializing } = useAuth()
@@ -40,7 +40,7 @@ function AppContent() {
         <Route path="/create-school" element={<ProtectedRoute><CreateSchool /></ProtectedRoute>} />
         <Route path="/create-class" element={<ProtectedRoute><CreateClass /></ProtectedRoute>} />
         <Route path="/schools" element={<ProtectedRoute><Schools /></ProtectedRoute>} />
-        <Route path="/my-classes" element={<ProtectedRoute><MyClasses /></ProtectedRoute>} />
+        <Route path="/classes/:schoolId" element={<ProtectedRoute><Classes /></ProtectedRoute>} />
         <Route path="/create-courses" element={<ProtectedRoute><CreateCourses /></ProtectedRoute>} />
         <Route path="/my-courses" element={<ProtectedRoute><MyCourses /></ProtectedRoute>} />
         <Route path="/course-details/:courseId" element={<ProtectedRoute><CourseDetails /></ProtectedRoute>} />
