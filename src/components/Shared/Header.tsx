@@ -89,12 +89,12 @@ const Header = () => {
                   </li>
                   <li>
                     <Link
-                      to="/my-schools"
+                      to="/schools"
                       className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
                       onClick={closeMenu}
                       role="menuitem"
                     >
-                      my schools
+                      schools
                     </Link>
                   </li>
                   <li>
