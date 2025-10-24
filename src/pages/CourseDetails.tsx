@@ -6,6 +6,7 @@ import Header from '../components/Shared/Header'
 import Loading from '../components/Shared/Loading'
 import Spinner from '../components/Shared/Spinner'
 import Modal from '../components/Shared/Modal'
+import profileImg from '../assets/profile.png'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -273,14 +274,6 @@ const CourseDetails = () => {
     }
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  }
-
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
@@ -387,106 +380,87 @@ const CourseDetails = () => {
   return (
     <div className="min-h-screen bg-[#2E2E69] py-8 px-4">
       <Header />
-      
-      <div className="md:max-w-[375px] mx-auto pt-10 pb-10">
-        {/* Back Button */}
-        <button
-          onClick={() => navigate('/my-courses')}
-          className="flex items-center text-white mb-6 hover:text-purple-300 transition-colors duration-200"
-        >
-          <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to Courses
-        </button>
-
-        {/* Course Details Card */}
-        <div className="bg-[#2E2E69] rounded-lg shadow-xl overflow-hidden mb-8">
-          {/* Course Header */}
-          <div className="h-32 bg-gradient-to-br from-purple-400 to-purple-600 relative overflow-hidden">
-            <div className="flex items-center justify-center h-full">
-              <svg className="h-12 w-12 text-white opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
+      <div className="max-w-[375px] mx-auto pt-8 pb-10">
+        <div className='w-full flex items-center justify-center'><img src={profileImg} alt='Profile image' className='w-24 h-24 rounded-full' /></div>
+        {/* Header Section */}
+          <div className="flex flex-col">
+              <h1 className="text-[#C0BFC4] text-3xl font-semibold">DansÉt</h1>
+              <p className="text-[#C0BFC4] text-2xl font-semibold">Break Dance</p>
           </div>
 
-          {/* Course Info */}
-          <div className="p-6">
-            <div className="flex items-start justify-between mb-4">
-              <h1 className="text-2xl font-bold text-white flex-1">Course Details</h1>
-              <button
-                onClick={() => setIsUploadModalOpen(true)}
-                className="ml-3 bg-[#BA40A466] text-white p-2 rounded-full hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 shadow-lg"
-                title="Upload Video"
-              >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        {/* Teacher Info */}
+        <div className="flex items-center justify-between mb-2">
+        <div>
+          <p className="text-[#C0BFC4] text-sm">PROFESSEUR: HAKIM MEDOUR</p>
+          <div className="flex items-center mt-1">
+            <span className="text-[#C0BFC4] text-sm mr-1">NIVEAU:</span>
+            <div className="flex">
+              {[1].map((star) => (
+                <svg
+                  key={star}
+                  className="w-4 h-4 text-[#CCCCCC] fill-current"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
-              </button>
-            </div>
-
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              {course.short_description || 'No description available'}
-            </p>
-
-            {/* Course Metadata */}
-            <div className="space-y-3 border-t border-gray-500 pt-4">
-              <div className="flex items-center text-sm text-gray-200">
-                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h6m-6 0l-1 12a2 2 0 002 2h6a2 2 0 002-2L15 7" />
-                </svg>
-                Course ID: {course.course_id}
-              </div>
-              <div className="flex items-center text-sm text-gray-200">
-                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h6m-6 0l-1 12a2 2 0 002 2h6a2 2 0 002-2L15 7" />
-                </svg>
-                Course Date: {formatDate(course.date)}
-              </div>
-              <div className="flex items-center text-sm text-gray-200">
-                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Created: {formatDate(course.created_at)}
-              </div>
+              ))}
             </div>
           </div>
         </div>
+        
+          <button
+            onClick={() => setIsUploadModalOpen(true)}
+            className="bg-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
+            title="Upload Video"
+          >
+            <svg className="w-5 h-5 text-[#2E2E69]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+          </button>
+        </div>
 
-        {/* Videos Section */}
-        <div className="bg-[#BA40A466] rounded-lg shadow-2xl p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Course Videos</h2>
+        {/* Date Display */}
+        <div className="mb-6 text-center">
+          <h2 className="text-[#C0BFC4] text-2xl font-semibold">Lundi 12 Janvier 2025</h2>
+        </div>
+
+        {/* Video Section */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-[#C0BFC4] text-sm font-medium">DEMO</h3>
+          </div>
           
-          {videos.length === 0 ? (
-            <div className="text-center py-12">
-              <svg className="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-              <h3 className="text-lg font-medium text-white mb-2">No Videos Uploaded</h3>
-              <p className="text-gray-200 mb-4">No videos have been uploaded for this course yet.</p>
-              <button
-                onClick={() => setIsUploadModalOpen(true)}
-                className="bg-[#BA40A4] text-white py-2 px-6 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium"
-              >
-                Upload First Video
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4">
+          {videos.length > 0 ? (
+            <div className="space-y-4">
               {videos.map((video) => (
-                <div key={video.video_id}>
-                  <div className="mb-3">
-                    <h3 className="font-medium text-white mb-1">Video {video.video_id}</h3>
-                    <p className="text-sm text-gray-200">Type: {video.video_type}</p>
-                    <p className="text-sm text-gray-300">Uploaded by: {video.uploaded_by.full_name}</p>
-                  </div>
-                  {/* Video Player */}
-                  <div className="mt-3">
-                    <CustomVideoPlayer src={video.video_url} title={`Video ${video.video_id}`} />
-                  </div>
+                <div key={video.video_id} className="relative rounded-lg overflow-hidden">
+                  <CustomVideoPlayer 
+                    src={video.video_url} 
+                    title="Demo Video"
+                  />
                 </div>
               ))}
+            </div>
+          ) : (
+            <div className="relative rounded-lg overflow-hidden bg-gray-800 aspect-video flex items-center justify-center">
+              <div className="text-center">
+                <svg className="h-12 w-12 text-gray-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-9-4V8a2 2 0 012-2h8a2 2 0 012 2v2M7 16h10a2 2 0 002-2V8a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                </svg>
+                <p className="text-gray-400 text-sm">No demo video available</p>
+                <button
+                  onClick={() => setIsUploadModalOpen(true)}
+                  className="mt-3 bg-[#BA40A4] text-white py-2 px-4 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium text-sm"
+                >
+                  Upload Video
+                </button>
+              </div>
+              <div className="absolute bottom-4 left-4 text-white text-xs opacity-80">
+                Dany Loko Prod
+              </div>
+              <div className="absolute bottom-4 right-4 text-white text-xs opacity-80">
+                0 of 3
+              </div>
             </div>
           )}
         </div>
@@ -499,30 +473,30 @@ const CourseDetails = () => {
         title="Upload Video"
         maxWidth="max-w-md"
       >
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* File Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-200 mb-2">
+            <label className="block text-sm font-medium text-white/80 mb-2">
               Select Video File
             </label>
             <input
               type="file"
               accept="video/*"
               onChange={handleFileSelect}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full h-auto rounded-[18px] bg-[#6F6D95] text-white placeholder-white/80 px-4 py-2 shadow-[0_6px_12px_rgba(6,20,40,0.22)] border border-white/10 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-white/20 file:text-white hover:file:bg-white/30"
             />
           </div>
 
           {/* Video Preview */}
           {previewUrl && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-white/80 mb-2">
                 Preview
               </label>
               <video
                 src={previewUrl}
                 controls
-                className="w-full rounded-md"
+                className="w-full rounded-[12px] shadow-[0_6px_12px_rgba(6,20,40,0.22)]"
                 style={{ maxHeight: '200px' }}
               >
                 Your browser does not support the video tag.
@@ -535,14 +509,14 @@ const CourseDetails = () => {
             <button
               onClick={handleCancelUpload}
               disabled={uploading}
-              className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-300 font-medium disabled:opacity-50"
+              className="flex-1 h-12 rounded-[24px] bg-[#6F6D95] text-white font-medium shadow-[0_6px_12px_rgba(6,20,40,0.22)] hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={handleUpload}
               disabled={!selectedFile || uploading}
-              className="flex-1 bg-[#BA40A466] text-white py-2 px-4 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300 font-medium disabled:opacity-50 flex items-center justify-center"
+              className="flex-1 h-12 rounded-[24px] bg-[#6DC03C] text-[#2E2E69] font-medium shadow-[0_8px_16px_rgba(6,20,40,0.30)] hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all disabled:opacity-50 flex items-center justify-center"
             >
               {uploading ? (
                 <>

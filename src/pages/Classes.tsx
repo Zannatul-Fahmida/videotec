@@ -6,6 +6,7 @@ import Loading from '../components/Shared/Loading'
 import Header from '../components/Shared/Header'
 import Modal from '../components/Shared/Modal'
 import CreateClassModal from '../components/classes/CreateClassModal'
+import profileImg from '../assets/profile.png'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -113,8 +114,9 @@ const Classes = () => {
   return (
     <div className="min-h-screen bg-[#2E2E69] py-8 px-4">
       <Header />
-      <div className="max-w-[375px] mx-auto">
-        <div className="my-6">
+      <div className="max-w-[375px] mx-auto mt-8">
+        <div className='w-full flex items-center justify-center'><img src={profileImg} alt='Profile image' className='w-24 h-24 rounded-full' /></div>
+        <div className="mb-6">
               <div className="flex items-center justify-between mb-4">
                 <h1 className="text-2xl font-bold text-[#C0BFC4]">Dan56t</h1>
                 <button

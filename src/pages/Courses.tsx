@@ -7,6 +7,7 @@ import Loading from '../components/Shared/Loading'
 import CreateCourses from '../components/courses/CreateCourses'
 import Modal from '../components/Shared/Modal'
 import studentImg from '../assets/student.png'
+import profileImg from '../assets/profile.png'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -127,7 +128,8 @@ const Courses = () => {
   return (
     <div className="min-h-screen bg-[#2E2E69] py-8 px-4">
       <Header />
-      <div className="max-w-[375px] mx-auto mt-10">
+      <div className="max-w-[375px] mx-auto mt-8">
+        <div className='w-full flex items-center justify-center'><img src={profileImg} alt='Profile image' className='w-24 h-24 rounded-full' /></div>
         {/* Header with Class Name and Plus Button */}
           <div className="flex items-center justify-between text-[#C0BFC4] font-semibold">
             <div>

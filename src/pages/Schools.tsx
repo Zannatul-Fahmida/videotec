@@ -6,6 +6,7 @@ import Loading from '../components/Shared/Loading'
 import Modal from '../components/Shared/Modal'
 import CreateSchool from '../components/schools/CreateSchool'
 import Header from '../components/Shared/Header'
+import profileImg from '../assets/profile.png'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -104,6 +105,7 @@ const Schools = () => {
       <Header />
       <div className="flex-1 flex justify-center items-start pt-8">
         <div className="w-full max-w-[375px]">
+          <div className='w-full flex items-center justify-center'><img src={profileImg} alt='Profile image' className='w-24 h-24 rounded-full' /></div>
           {/* Header with Search and Plus Button */}
           <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
