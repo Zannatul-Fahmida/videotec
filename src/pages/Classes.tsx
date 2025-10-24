@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useAuth } from '../contexts/AuthContext'
 import Loading from '../components/Shared/Loading'
@@ -31,6 +31,7 @@ const Classes = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const { user, isLoading, isInitializing } = useAuth()
   const { schoolId } = useParams<{ schoolId: string }>()
+  const navigate = useNavigate()
   const school_id = schoolId // For consistency with API calls
 
   // Show loading while initializing or if user data is being loaded
@@ -118,7 +119,7 @@ const Classes = () => {
                 <h1 className="text-2xl font-bold text-[#C0BFC4]">Dan56t</h1>
                 <button
                   onClick={() => setIsCreateModalOpen(true)}
-                  className="bg-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-gray-100 transition-colors duration-200"
+                  className="bg-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
                   aria-label="Add new school"
                 >
                   <svg className="w-5 h-5 text-[#2E2E69]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,9 +161,14 @@ const Classes = () => {
         ) : (
           <div className="space-y-4">
             {classes.map((classItem) => (
-              <div key={classItem.class_id} className="bg-[#BA40A466] rounded-lg shadow-lg overflow-hidden relative text-[#C0BFC4]">
+              <div
+                key={classItem.class_id}
+                className="bg-[#BA40A466] rounded-lg shadow-lg overflow-hidden relative text-[#C0BFC4] cursor-pointer"
+                onClick={() => navigate(`/courses/${classItem.class_id}`)}
+              >
                 {/* Settings Icon - Top Right */}
                 <button
+                  onClick={(e) => e.stopPropagation()}
                   className="absolute top-3 right-3 w-8 h-8 text-white rounded-full flex items-center justify-center hover:text-gray-100 transition-colors duration-200 z-10 cursor-pointer"
                   aria-label="Settings"
                 >
@@ -188,9 +194,14 @@ const Classes = () => {
                   </p>
 
                   {/* Level */}
-                  <p className="text-sm mb-1">
-                    <span className="font-medium">NIVEAU:</span> {classItem.level.toUpperCase()}
-                  </p>
+                  <div className="text-sm mb-1 flex items-center">
+                    <span className="font-medium mr-1">NIVEAU:</span>
+                    {Array.from({ length: Number(classItem.level) }).map((_, idx) => (
+                      <svg key={idx} className="w-3.5 h-3.5 text-[#CCCCCC] mr-1" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z" />
+                      </svg>
+                    ))}
+                  </div>
 
                   {/* Schedule */}
                   <p className="text-sm">

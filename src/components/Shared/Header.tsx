@@ -29,7 +29,7 @@ const Header = () => {
   }
 
   return (
-    <div className="md:max-w-[375px] mx-auto flex items-center justify-between">
+    <div className="max-w-[375px] mx-auto flex items-center justify-between">
       <button
         type="button"
         aria-label="Notifications"
