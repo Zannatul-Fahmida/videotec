@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Header from '../components/Shared/Header'
 import Loading from '../components/Shared/Loading'
 import Spinner from '../components/Shared/Spinner'
+import ProfilePictureModal from '../components/Shared/ProfilePictureModal'
 import { useAuth } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
@@ -9,9 +10,9 @@ import toast from 'react-hot-toast'
 const Profile = () => {
   const { user, logout, isLoading, isInitializing } = useAuth()
   const navigate = useNavigate()
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const [profileImage, setProfileImage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Show loading while initializing or if user data is being loaded
   if (isInitializing || isLoading) {
@@ -19,31 +20,15 @@ const Profile = () => {
   }
 
   const handleImageClick = () => {
-    fileInputRef.current?.click()
+    setIsModalOpen(true)
   }
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        toast.error('Please select a valid image file')
-        return
-      }
+  const handleImageUpload = (imageUrl: string) => {
+    setProfileImage(imageUrl)
+  }
 
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('Image size should be less than 5MB')
-        return
-      }
-
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setProfileImage(e.target?.result as string)
-        toast.success('Profile image updated!')
-      }
-      reader.readAsDataURL(file)
-    }
+  const handleImageDelete = () => {
+    setProfileImage(null)
   }
 
   const handleLogout = async () => {
@@ -90,7 +75,6 @@ const Profile = () => {
               )}
             </div>
           </div>
-          <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
 
           {/* Name */}
           <h3 className="mt-4 text-white text-[24px] font-bold capitalize">{user?.full_name}</h3>
@@ -166,6 +150,15 @@ const Profile = () => {
           </button>
         </div>
       </div>
+
+      {/* Profile Picture Modal */}
+      <ProfilePictureModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        currentImage={profileImage}
+        onImageUpload={handleImageUpload}
+        onImageDelete={handleImageDelete}
+      />
     </div>
   )
 }

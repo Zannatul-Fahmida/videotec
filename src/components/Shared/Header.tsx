@@ -79,22 +79,22 @@ const Header = () => {
                   </li>
                   <li>
                     <Link
-                      to="/create-school"
-                      className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
-                      onClick={closeMenu}
-                      role="menuitem"
-                    >
-                      create school
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
                       to="/schools"
                       className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
                       onClick={closeMenu}
                       role="menuitem"
                     >
                       schools
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/create-school"
+                      className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
+                      onClick={closeMenu}
+                      role="menuitem"
+                    >
+                      create school
                     </Link>
                   </li>
                   <li>
@@ -109,32 +109,12 @@ const Header = () => {
                   </li>
                   <li>
                     <Link
-                      to="/my-classes"
-                      className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
-                      onClick={closeMenu}
-                      role="menuitem"
-                    >
-                      my classes
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
                       to="/create-courses"
                       className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
                       onClick={closeMenu}
                       role="menuitem"
                     >
                       create courses
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/my-courses"
-                      className="block w-full text-left font-poppins text-lg font-semibold tracking-[0.15em] capitalize text-[#C0BFC4] hover:text-white py-1 focus:outline-none"
-                      onClick={closeMenu}
-                      role="menuitem"
-                    >
-                      my courses
                     </Link>
                   </li>
                   <li>
