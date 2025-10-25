@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
-import Modal from './Modal'
 import toast from 'react-hot-toast'
+import Modal from './Shared/Modal'
 
 interface ProfilePictureModalProps {
   isOpen: boolean

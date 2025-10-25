@@ -6,6 +6,7 @@ import Header from '../components/Shared/Header'
 import Loading from '../components/Shared/Loading'
 import Spinner from '../components/Shared/Spinner'
 import Modal from '../components/Shared/Modal'
+import Comments from '../components/Comments'
 import profileImg from '../assets/profile.png'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -384,7 +385,7 @@ const CourseDetails = () => {
         <div className='w-full flex items-center justify-center'><img src={profileImg} alt='Profile image' className='w-24 h-24 rounded-full' /></div>
         {/* Header Section */}
           <div className="flex flex-col">
-              <h1 className="text-[#C0BFC4] text-3xl font-semibold">DansÉt</h1>
+              <h1 className="text-[#C0BFC4] text-3xl font-semibold">Dans6t</h1>
               <p className="text-[#C0BFC4] text-2xl font-semibold">Break Dance</p>
           </div>
 
@@ -464,6 +465,9 @@ const CourseDetails = () => {
             </div>
           )}
         </div>
+
+      {/* Comments Section */}
+      <Comments />
       </div>
 
       {/* Upload Modal */}

@@ -118,7 +118,7 @@ const Classes = () => {
         <div className='w-full flex items-center justify-center'><img src={profileImg} alt='Profile image' className='w-24 h-24 rounded-full' /></div>
         <div className="mb-6">
               <div className="flex items-center justify-between mb-4">
-                <h1 className="text-2xl font-bold text-[#C0BFC4]">Dan56t</h1>
+                <h1 className="text-2xl font-bold text-[#C0BFC4]">Dans6t</h1>
                 <button
                   onClick={() => setIsCreateModalOpen(true)}
                   className="bg-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
